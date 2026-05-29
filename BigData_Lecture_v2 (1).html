@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 9 — Big Data & Analytics | IT in Business</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* ─── ROOT VARIABLES ─── */
+:root {
+  --bg:       #FAFAF7;
+  --white:    #FFFFFF;
+  --orange:   #E8500A;
+  --orange-lt:#FFF1EB;
+  --navy:     #0F2744;
+  --teal:     #0D7377;
+  --teal-lt:  #E8F8F8;
+  --text:     #1C1C2E;
+  --muted:    #6B7489;
+  --border:   #E8E8E0;
+  --yellow:   #F5A623;
+  --yellow-lt:#FFFBF0;
+  --green:    #16A34A;
+  --green-lt: #F0FDF4;
+  --card-shadow: 0 2px 20px rgba(15,39,68,0.07);
+  --card-hover:  0 8px 40px rgba(15,39,68,0.13);
+}
+
+/* ─── RESET & BASE ─── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; font-size:16px; }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ─── TYPOGRAPHY ─── */
+h1,h2,h3,h4 { font-family:'Outfit',sans-serif; line-height:1.15; }
+p { color: var(--muted); font-size:16px; }
+strong { color: var(--text); font-weight:600; }
+em { color: var(--orange); font-style:italic; }
+
+/* ─── LAYOUT ─── */
+.container { max-width:1140px; margin:0 auto; padding:0 28px; }
+section { padding:88px 0; }
+section:nth-child(even) { background: var(--white); }
+
+/* ─── CHAPTER TAG ─── */
+.chapter-tag {
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--orange-lt); color:var(--orange);
+  font-size:12px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; padding:6px 16px;
+  border-radius:100px; margin-bottom:20px;
+}
+.chapter-tag::before { content:''; width:8px; height:8px; border-radius:50%; background:var(--orange); display:block; }
+
+/* ─── SECTION NUMBERS ─── */
+.section-eyebrow {
+  display:flex; align-items:center; gap:14px; margin-bottom:16px;
+}
+.section-num {
+  font-size:13px; font-weight:800; color:var(--orange);
+  letter-spacing:1.5px; font-family:'Outfit',sans-serif;
+}
+.section-line { flex:1; height:1px; background:var(--border); max-width:60px; }
+
+/* ─── HEADINGS ─── */
+.page-title { font-size:clamp(40px,7vw,80px); font-weight:900; color:var(--navy); letter-spacing:-2px; }
+.section-title { font-size:clamp(28px,4vw,44px); font-weight:800; color:var(--navy); letter-spacing:-0.5px; margin-bottom:12px; }
+.section-sub { font-size:17px; color:var(--muted); max-width:620px; margin-bottom:52px; line-height:1.7; }
+
+/* ─── HERO ─── */
+.hero {
+  background: var(--navy);
+  padding: 0;
+  min-height: 100vh;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  overflow:hidden;
+  position:relative;
+}
+@media(max-width:900px){ .hero{grid-template-columns:1fr;} }
+
+.hero-left {
+  padding: 80px 64px 80px 60px;
+  display:flex; flex-direction:column; justify-content:center;
+  position:relative; z-index:2;
+}
+@media(max-width:900px){ .hero-left{padding:60px 28px;} }
+
+.hero-course {
+  display:inline-flex; align-items:center; gap:10px;
+  border:1.5px solid rgba(255,255,255,0.18);
+  color:rgba(255,255,255,0.7);
+  font-size:11px; font-weight:600; letter-spacing:2.5px;
+  text-transform:uppercase; padding:8px 18px;
+  border-radius:4px; margin-bottom:36px;
+  width:fit-content;
+}
+
+.hero h1 {
+  font-size:clamp(44px,7vw,84px);
+  font-weight:900; color:#FFFFFF;
+  letter-spacing:-2.5px; line-height:0.95;
+  margin-bottom:12px;
+}
+.hero h1 span { color:#F5A623; display:block; }
+
+.hero-sub-title {
+  font-size:clamp(20px,3vw,28px); font-weight:300;
+  color:rgba(255,255,255,0.55); margin-bottom:40px;
+  letter-spacing:-0.3px;
+}
+
+.hero-hook {
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  border-left:3px solid var(--yellow);
+  border-radius:0 8px 8px 0;
+  padding:18px 22px;
+  margin-bottom:44px;
+  max-width:480px;
+}
+.hero-hook p { color:rgba(255,255,255,0.75); font-size:15px; line-height:1.6; }
+.hero-hook p strong { color:#FFFFFF; }
+
+.hero-stats { display:flex; gap:40px; flex-wrap:wrap; }
+.hero-stat-item { }
+.hero-stat-num { font-size:30px; font-weight:800; color:var(--yellow); line-height:1; }
+.hero-stat-label { font-size:12px; color:rgba(255,255,255,0.5); letter-spacing:0.5px; margin-top:4px; }
+
+.hero-right {
+  position:relative; overflow:hidden;
+}
+@media(max-width:900px){ .hero-right{display:none;} }
+
+.hero-right img {
+  width:100%; height:100%;
+  object-fit:cover; object-position:center;
+  opacity:0.65;
+}
+.hero-right::after {
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(90deg, var(--navy) 0%, transparent 40%);
+}
+
+.hero-scroll {
+  position:absolute; bottom:36px; left:60px;
+  display:flex; align-items:center; gap:10px;
+  color:rgba(255,255,255,0.35); font-size:12px; letter-spacing:2px;
+  text-transform:uppercase;
+}
+.hero-scroll svg { animation:bounce 2s ease-in-out infinite; }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+
+/* ─── STICKY NAV ─── */
+.sticky-nav {
+  position:sticky; top:0; z-index:100;
+  background:rgba(255,255,255,0.96);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+  padding:0 28px;
+}
+.sticky-nav-inner {
+  max-width:1140px; margin:0 auto;
+  display:flex; align-items:center; gap:4px;
+  height:54px; overflow-x:auto;
+}
+.sticky-nav a {
+  color:var(--muted); text-decoration:none;
+  font-size:13px; font-weight:500; white-space:nowrap;
+  padding:7px 14px; border-radius:6px; transition:all 0.2s;
+}
+.sticky-nav a:hover { color:var(--orange); background:var(--orange-lt); }
+
+/* ─── CALLOUT BOXES ─── */
+.callout {
+  border-radius:12px; padding:22px 26px;
+  display:flex; gap:16px; align-items:flex-start;
+  margin:24px 0;
+}
+.callout-icon { font-size:24px; flex-shrink:0; margin-top:2px; }
+.callout-body p { font-size:15px; line-height:1.65; }
+.callout-body strong { display:block; margin-bottom:4px; font-size:13px; letter-spacing:0.5px; text-transform:uppercase; }
+.callout.tip { background:var(--yellow-lt); border:1px solid rgba(245,166,35,0.25); }
+.callout.tip .callout-body p { color:#7A5A0A; }
+.callout.tip .callout-body strong { color:#C47A00; }
+.callout.info { background:var(--teal-lt); border:1px solid rgba(13,115,119,0.2); }
+.callout.info .callout-body p { color:#0A5558; }
+.callout.info .callout-body strong { color:var(--teal); }
+.callout.example { background:var(--orange-lt); border:1px solid rgba(232,80,10,0.2); }
+.callout.example .callout-body p { color:#7A2000; }
+.callout.example .callout-body strong { color:var(--orange); }
+.callout.success { background:var(--green-lt); border:1px solid rgba(22,163,74,0.2); }
+.callout.success .callout-body p { color:#14532D; }
+.callout.success .callout-body strong { color:var(--green); }
+
+/* ─── STAT HIGHLIGHT ─── */
+.stat-highlight {
+  background:var(--navy);
+  border-radius:16px;
+  padding:36px 40px;
+  display:flex; gap:48px; flex-wrap:wrap;
+  margin:40px 0;
+}
+.stat-h-item { border-left:3px solid var(--orange); padding-left:18px; }
+.stat-h-num { font-size:36px; font-weight:800; color:#FFFFFF; line-height:1; }
+.stat-h-label { font-size:13px; color:rgba(255,255,255,0.55); margin-top:6px; }
+
+/* ─── 5 V'S GRID ─── */
+.vs-grid {
+  display:grid; grid-template-columns:repeat(5,1fr);
+  gap:16px; margin:40px 0;
+}
+@media(max-width:900px){ .vs-grid{grid-template-columns:1fr 1fr;} }
+@media(max-width:500px){ .vs-grid{grid-template-columns:1fr;} }
+
+.v-card {
+  background:var(--white); border:1.5px solid var(--border);
+  border-radius:14px; padding:26px 20px;
+  transition:transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  cursor:default;
+}
+.v-card:hover { transform:translateY(-5px); box-shadow:var(--card-hover); border-color:var(--orange); }
+.v-emoji { font-size:32px; margin-bottom:14px; display:block; }
+.v-letter { font-size:42px; font-weight:900; color:var(--orange); opacity:0.15; line-height:1; margin-bottom:-8px; }
+.v-name { font-size:15px; font-weight:700; color:var(--navy); margin-bottom:8px; }
+.v-desc { font-size:13px; color:var(--muted); line-height:1.6; margin-bottom:12px; }
+.v-example-box {
+  background:var(--orange-lt); border-radius:8px; padding:10px 12px;
+  font-size:12px; color:var(--orange); font-weight:500; line-height:1.5;
+}
+
+/* ─── DATA TYPE SECTION ─── */
+.data-types { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin:36px 0; }
+@media(max-width:700px){ .data-types{grid-template-columns:1fr;} }
+.data-type-card {
+  border-radius:12px; padding:24px;
+  border:1.5px solid var(--border); background:var(--white);
+}
+.data-type-icon { font-size:28px; margin-bottom:12px; }
+.data-type-name { font-size:15px; font-weight:700; color:var(--navy); margin-bottom:6px; }
+.data-type-desc { font-size:13px; color:var(--muted); }
+.data-type-eg { margin-top:12px; font-size:12px; font-weight:600; color:var(--teal); }
+
+/* ─── BUSINESS CASE STUDIES ─── */
+.case-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin:40px 0; }
+@media(max-width:750px){ .case-grid{grid-template-columns:1fr;} }
+
+.case-card {
+  border-radius:16px; overflow:hidden;
+  box-shadow:var(--card-shadow); border:1px solid var(--border);
+  background:var(--white);
+  transition:transform 0.25s, box-shadow 0.25s;
+}
+.case-card:hover { transform:translateY(-4px); box-shadow:var(--card-hover); }
+
+.case-img { width:100%; height:200px; object-fit:cover; display:block; }
+.case-img-placeholder {
+  width:100%; height:200px; display:flex;
+  align-items:center; justify-content:center;
+  font-size:56px;
+}
+
+.case-body { padding:24px; }
+.case-company-row { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.case-badge {
+  font-size:11px; font-weight:700; letter-spacing:1px;
+  text-transform:uppercase; padding:4px 12px;
+  border-radius:100px;
+}
+.case-badge.orange { background:var(--orange-lt); color:var(--orange); }
+.case-badge.teal { background:var(--teal-lt); color:var(--teal); }
+.case-badge.yellow { background:var(--yellow-lt); color:#8B6200; }
+.case-badge.green { background:var(--green-lt); color:var(--green); }
+
+.case-stat-num { font-size:40px; font-weight:900; color:var(--navy); line-height:1; margin-bottom:4px; }
+.case-stat-label { font-size:13px; color:var(--muted); margin-bottom:14px; }
+.case-title { font-size:17px; font-weight:700; color:var(--navy); margin-bottom:8px; }
+.case-desc { font-size:14px; color:var(--muted); line-height:1.65; }
+.case-insight {
+  margin-top:16px; padding:12px 14px;
+  background:var(--teal-lt); border-radius:8px;
+  font-size:13px; color:var(--teal); font-weight:500;
+  display:flex; gap:8px; align-items:flex-start;
+}
+
+/* ─── BIG CASE (wide) ─── */
+.case-card.wide { grid-column:1/-1; display:grid; grid-template-columns:1fr 1.2fr; }
+@media(max-width:700px){ .case-card.wide{grid-column:1; grid-template-columns:1fr;} }
+.case-card.wide .case-img { height:100%; min-height:240px; }
+.case-card.wide .case-img-placeholder { height:100%; min-height:240px; }
+
+/* ─── PIPELINE STEPS ─── */
+.pipeline { display:flex; align-items:stretch; gap:0; margin:40px 0; }
+@media(max-width:850px){ .pipeline{flex-direction:column;} }
+
+.pipe-step {
+  flex:1; padding:32px 22px;
+  background:var(--white); border:1px solid var(--border);
+  border-right:0; position:relative;
+  transition:background 0.2s;
+}
+.pipe-step:last-child { border-right:1px solid var(--border); }
+.pipe-step:first-child { border-radius:12px 0 0 12px; }
+.pipe-step:last-child { border-radius:0 12px 12px 0; }
+@media(max-width:850px){
+  .pipe-step { border-right:1px solid var(--border); border-bottom:0; }
+  .pipe-step:last-child { border-bottom:1px solid var(--border); }
+  .pipe-step:first-child { border-radius:12px 12px 0 0; }
+  .pipe-step:last-child { border-radius:0 0 12px 12px; }
+}
+.pipe-step:hover { background:var(--orange-lt); }
+.pipe-arrow {
+  position:absolute; right:-14px; top:50%; transform:translateY(-50%);
+  width:28px; height:28px; background:var(--orange);
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  z-index:2; color:#FFFFFF; font-size:13px; font-weight:700;
+  box-shadow:0 2px 8px rgba(232,80,10,0.3);
+}
+@media(max-width:850px){
+  .pipe-arrow { right:auto; bottom:-14px; top:auto; left:50%; transform:translateX(-50%); }
+}
+.pipe-num-circle {
+  width:40px; height:40px; border-radius:50%;
+  background:var(--navy); color:#FFFFFF;
+  font-size:16px; font-weight:800;
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:16px;
+}
+.pipe-icon-big { font-size:32px; margin-bottom:10px; }
+.pipe-name { font-size:14px; font-weight:700; color:var(--navy); margin-bottom:6px; letter-spacing:0.3px; }
+.pipe-desc { font-size:13px; color:var(--muted); line-height:1.55; }
+
+/* ─── TECH CARDS ─── */
+.tech-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin:40px 0; }
+@media(max-width:900px){ .tech-grid{grid-template-columns:1fr 1fr;} }
+@media(max-width:550px){ .tech-grid{grid-template-columns:1fr;} }
+
+.tech-card {
+  background:var(--white); border:1.5px solid var(--border);
+  border-radius:14px; padding:26px;
+  transition:transform 0.25s, box-shadow 0.25s;
+}
+.tech-card:hover { transform:translateY(-4px); box-shadow:var(--card-hover); }
+.tech-logo-area { font-size:36px; margin-bottom:16px; }
+.tech-name { font-size:16px; font-weight:700; color:var(--navy); margin-bottom:4px; }
+.tech-category { font-size:11px; font-weight:700; color:var(--orange); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px; }
+.tech-desc { font-size:14px; color:var(--muted); line-height:1.6; margin-bottom:14px; }
+.tech-analogy {
+  background:var(--yellow-lt); border-radius:8px; padding:12px 14px;
+  font-size:13px; color:#7A5A0A; line-height:1.5;
+}
+.tech-analogy strong { color:#C47A00; font-size:11px; letter-spacing:0.5px; text-transform:uppercase; display:block; margin-bottom:3px; }
+
+/* ─── COMPARISON TABLE ─── */
+.compare-table { width:100%; border-collapse:separate; border-spacing:0; border-radius:12px; overflow:hidden; border:1px solid var(--border); margin:36px 0; }
+.compare-table th { background:var(--navy); color:#FFFFFF; font-size:13px; font-weight:600; padding:14px 18px; text-align:left; }
+.compare-table td { padding:14px 18px; font-size:14px; color:var(--muted); border-bottom:1px solid var(--border); }
+.compare-table tr:last-child td { border-bottom:none; }
+.compare-table tr:nth-child(even) td { background:#FAFAF7; }
+.compare-table td:first-child { font-weight:600; color:var(--text); }
+.compare-table .badge-yes { color:var(--green); font-weight:700; }
+.compare-table .badge-no  { color:#E53E3E; font-weight:700; }
+
+/* ─── LAKE VS WAREHOUSE ─── */
+.lvw-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin:36px 0; }
+@media(max-width:650px){ .lvw-grid{grid-template-columns:1fr;} }
+.lvw-card {
+  border-radius:14px; padding:28px;
+  border:1.5px solid var(--border);
+}
+.lvw-card.lake { border-top:4px solid var(--teal); }
+.lvw-card.warehouse { border-top:4px solid var(--orange); }
+.lvw-icon { font-size:40px; margin-bottom:14px; }
+.lvw-name { font-size:18px; font-weight:800; color:var(--navy); margin-bottom:6px; }
+.lvw-tagline { font-size:13px; font-weight:600; color:var(--muted); margin-bottom:16px; }
+.lvw-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
+.lvw-list li { font-size:14px; color:var(--muted); display:flex; gap:8px; align-items:flex-start; }
+.lvw-list li::before { content:'✓'; color:var(--teal); font-weight:700; margin-top:1px; flex-shrink:0; }
+.lvw-card.warehouse .lvw-list li::before { color:var(--orange); }
+
+/* ─── PHOTO SPOTLIGHT ─── */
+.photo-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin:36px 0; }
+@media(max-width:700px){ .photo-row{grid-template-columns:1fr;} }
+.photo-spot { border-radius:12px; overflow:hidden; position:relative; }
+.photo-spot img { width:100%; height:200px; object-fit:cover; display:block; }
+.photo-spot-caption {
+  position:absolute; bottom:0; left:0; right:0;
+  background:linear-gradient(0deg,rgba(15,39,68,0.9) 0%,transparent 100%);
+  color:#FFFFFF; padding:28px 16px 14px;
+  font-size:13px; font-weight:500;
+}
+
+/* ─── SUMMARY / TAKEAWAY ─── */
+.takeaway-list { display:flex; flex-direction:column; gap:16px; margin:36px 0; }
+.takeaway-item {
+  display:flex; gap:18px; align-items:flex-start;
+  background:var(--white); border:1px solid var(--border);
+  border-radius:12px; padding:20px 24px;
+}
+.takeaway-num {
+  width:36px; height:36px; border-radius:50%;
+  background:var(--navy); color:#FFF;
+  font-weight:800; font-size:15px;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.takeaway-text { font-size:15px; color:var(--text); line-height:1.6; padding-top:5px; }
+
+/* ─── ANALOGY BLOCK ─── */
+.analogy-block {
+  background:var(--navy); color:#FFFFFF;
+  border-radius:16px; padding:36px;
+  display:grid; grid-template-columns:auto 1fr; gap:24px;
+  align-items:start; margin:36px 0;
+}
+.analogy-icon { font-size:52px; }
+.analogy-title { font-size:16px; font-weight:700; color:var(--yellow); margin-bottom:8px; text-transform:uppercase; letter-spacing:1px; }
+.analogy-text { font-size:15px; color:rgba(255,255,255,0.75); line-height:1.7; }
+.analogy-text strong { color:#FFFFFF; }
+
+/* ─── QUIZ BOX ─── */
+.quiz-box {
+  background:linear-gradient(135deg, var(--navy), #1A3A5C);
+  border-radius:16px; padding:36px;
+  margin:52px 0;
+}
+.quiz-box h3 { font-size:20px; font-weight:700; color:#FFFFFF; margin-bottom:24px; }
+.quiz-q { display:flex; gap:14px; margin-bottom:16px; align-items:flex-start; }
+.quiz-q-num { background:var(--orange); color:#FFF; font-size:13px; font-weight:700; padding:3px 10px; border-radius:100px; flex-shrink:0; margin-top:3px; }
+.quiz-q-text { font-size:15px; color:rgba(255,255,255,0.8); line-height:1.6; }
+
+/* ─── FOOTER ─── */
+footer {
+  background:var(--navy); color:rgba(255,255,255,0.45);
+  padding:48px 28px; text-align:center;
+  font-size:13px; letter-spacing:0.5px;
+}
+footer strong { color:rgba(255,255,255,0.7); }
+
+/* ─── REFERENCE ─── */
+.refs-list { display:flex; flex-direction:column; gap:10px; }
+.ref-item { display:flex; gap:14px; font-size:13px; color:var(--muted); line-height:1.6; }
+.ref-n { color:var(--orange); font-weight:700; flex-shrink:0; width:22px; }
+.ref-item a { color:var(--teal); text-decoration:none; }
+.ref-item a:hover { text-decoration:underline; }
+
+/* ─── BREADCRUMB ─── */
+.breadcrumb { display:flex; gap:8px; align-items:center; font-size:12px; color:var(--muted); margin-bottom:28px; flex-wrap:wrap; }
+.breadcrumb span { color:var(--border); }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.fade-up { animation:fadeUp 0.6s ease both; }
+.fade-up-d1 { animation-delay:0.1s; }
+.fade-up-d2 { animation-delay:0.2s; }
+.fade-up-d3 { animation-delay:0.3s; }
+
+/* ─── DIVIDER ─── */
+.divider { border:none; border-top:1px solid var(--border); margin:48px 0; }
+
+/* ─── INLINE FIGURE ─── */
+figure {
+  margin:36px 0; border-radius:14px; overflow:hidden;
+  box-shadow:var(--card-shadow); border:1px solid var(--border);
+}
+figure img { width:100%; display:block; max-height:380px; object-fit:cover; }
+figcaption { background:var(--white); padding:14px 20px; font-size:13px; color:var(--muted); }
+figcaption strong { color:var(--navy); }
+
+/* ─── PILL TAGS ─── */
+.tag { display:inline-block; background:var(--teal-lt); color:var(--teal); font-size:12px; font-weight:600; padding:3px 12px; border-radius:100px; }
+
+/* ─── IMAGE BANNER ─── */
+.img-banner { width:100%; height:300px; object-fit:cover; border-radius:14px; display:block; margin:28px 0; }
+
+/* Responsive tweaks */
+@media(max-width:600px) {
+  section { padding:60px 0; }
+  .analogy-block { grid-template-columns:1fr; }
+  .stat-highlight { flex-direction:column; gap:28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section class="hero" style="padding:0">
+  <div class="hero-left fade-up">
+    <div class="hero-course">📚 Information Technology in Business &nbsp;·&nbsp; Chapter 9</div>
+    <h1>Big<span>Data &<br>Analytics</span></h1>
+    <p class="hero-sub-title">The basics, made simple.</p>
+
+    <div class="hero-hook">
+      <p>🤔 <strong>Quick question before we start:</strong><br>
+      Did you use Google today? Check Instagram? Order food? Pay with your card?
+      If yes — congratulations, you already contributed to Big Data this morning.</p>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">2.5QT</div>
+        <div class="hero-stat-label">bytes of data created daily</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">97.2%</div>
+        <div class="hero-stat-label">of businesses invest in big data</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">$924B</div>
+        <div class="hero-stat-label">market size by 2032</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900&q=80" alt="Data network visualization from space" />
+  </div>
+
+  <div class="hero-scroll">
+    <span>Scroll to begin</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</section>
+
+<!-- ═══════════════════ NAV ═══════════════════ -->
+<nav class="sticky-nav">
+  <div class="sticky-nav-inner">
+    <a href="#s91">9.1 Overview</a>
+    <a href="#s92">9.2 In Business</a>
+    <a href="#s93">9.3 Technologies</a>
+    <a href="#s94">9.4 Foundation</a>
+    <a href="#summary">Summary</a>
+    <a href="#references">References</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════ 9.1 OVERVIEW ═══════════════════ -->
+<section id="s91">
+  <div class="container">
+
+    <div class="breadcrumb">
+      <span>Chapter 9</span><span>›</span><strong>9.1 Overview of Big Data</strong>
+    </div>
+    <div class="section-eyebrow">
+      <span class="section-num">SECTION 9.1</span>
+      <div class="section-line"></div>
+    </div>
+    <h2 class="section-title">Overview of Big Data</h2>
+    <p class="section-sub">Let's start from the very beginning. No tech jargon, just plain language — and things you already know.</p>
+
+    <!-- What is data -->
+    <h3 style="font-size:22px;font-weight:700;color:var(--navy);margin-bottom:12px;">First — What even IS data?</h3>
+    <p style="margin-bottom:16px;">Data is simply <strong>recorded information</strong>. Any fact, number, word, image, or signal that can be stored and read is data. You've been working with data your whole life — you just never called it that.</p>
+
+    <div class="data-types">
+      <div class="data-type-card">
+        <div class="data-type-icon">📋</div>
+        <div class="data-type-name">Structured Data</div>
+        <div class="data-type-desc">Neatly organized in rows and columns. Easy for computers to read and search.</div>
+        <div class="data-type-eg">Examples: Your bank statement, an Excel spreadsheet, a student grade list</div>
+      </div>
+      <div class="data-type-card">
+        <div class="data-type-icon">📧</div>
+        <div class="data-type-name">Semi-Structured Data</div>
+        <div class="data-type-desc">Partly organized. Has some structure but also contains free-form content.</div>
+        <div class="data-type-eg">Examples: Emails (sender + date = structured, message body = not), WhatsApp messages, JSON files</div>
+      </div>
+      <div class="data-type-card">
+        <div class="data-type-icon">🎬</div>
+        <div class="data-type-name">Unstructured Data</div>
+        <div class="data-type-desc">No fixed format. Hardest to process but makes up 80% of all data in the world.</div>
+        <div class="data-type-eg">Examples: TikTok videos, Instagram photos, voice notes, PDF documents</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- What makes it BIG -->
+    <h3 style="font-size:22px;font-weight:700;color:var(--navy);margin-bottom:12px;">So what makes data "BIG"?</h3>
+    <p style="margin-bottom:24px;">Big Data is <strong>not just about file size</strong>. It means data that is so large, fast, or complex that <strong>normal tools like Excel or a regular database can't handle it.</strong></p>
+
+    <div class="analogy-block">
+      <div class="analogy-icon">🏟️</div>
+      <div>
+        <div class="analogy-title">Think of it like a football stadium vs a classroom</div>
+        <div class="analogy-text">
+          A classroom has 30 students. A teacher can track their names, marks, and attendance easily in a notebook. That's <strong>regular data</strong>.<br><br>
+          Now imagine you need to track every single movement, heartbeat, food purchase, phone tap, and step taken by <strong>50,000 fans</strong> inside a stadium — every second, for 90 minutes. That's <strong>Big Data</strong>. You'd need entirely different tools, storage systems, and processing power just to handle it.
+        </div>
+      </div>
+    </div>
+
+    <figure>
+      <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=1200&q=80" alt="Smartphone generating data" />
+      <figcaption><strong>Every action on your phone creates data.</strong> Tapping, scrolling, pausing, typing — it all gets recorded and sent to servers. Multiply that by 5.35 billion internet users, and you begin to understand why we call it "big."</figcaption>
+    </figure>
+
+    <!-- 5 V's -->
+    <h3 style="font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px;">The 5 V's of Big Data</h3>
+    <p style="margin-bottom:28px;">Researchers at IBM and Gartner defined Big Data using these five characteristics. If data has all five — it's definitely Big Data.</p>
+
+    <div class="vs-grid">
+      <div class="v-card">
+        <span class="v-emoji">📦</span>
+        <div class="v-letter">V</div>
+        <div class="v-name">Volume</div>
+        <div class="v-desc">The <em>amount</em> of data. We're not talking gigabytes — we're talking petabytes and zettabytes.</div>
+        <div class="v-example-box">📌 Facebook stores 100+ petabytes of photos. That's 100 million gigabytes.</div>
+      </div>
+      <div class="v-card">
+        <span class="v-emoji">⚡</span>
+        <div class="v-letter">V</div>
+        <div class="v-name">Velocity</div>
+        <div class="v-desc">The <em>speed</em> at which data is created and must be processed — often in real time.</div>
+        <div class="v-example-box">📌 Google processes 8.5 billion searches per day. That's nearly 100,000 every second.</div>
+      </div>
+      <div class="v-card">
+        <span class="v-emoji">🎭</span>
+        <div class="v-letter">V</div>
+        <div class="v-name">Variety</div>
+        <div class="v-desc">Data comes in many <em>formats</em> — text, images, videos, audio, sensor readings, GPS logs.</div>
+        <div class="v-example-box">📌 One single Instagram post has text, photo, location, hashtags, time, and device info.</div>
+      </div>
+      <div class="v-card">
+        <span class="v-emoji">✅</span>
+        <div class="v-letter">V</div>
+        <div class="v-name">Veracity</div>
+        <div class="v-desc">How <em>trustworthy</em> and accurate the data is. Bad data = wrong decisions.</div>
+        <div class="v-example-box">📌 If someone enters a fake birthday online, that data is wrong. Veracity asks: "Can we trust this?"</div>
+      </div>
+      <div class="v-card">
+        <span class="v-emoji">💡</span>
+        <div class="v-letter">V</div>
+        <div class="v-name">Value</div>
+        <div class="v-desc">The <em>usefulness</em> extracted from data. Raw data means nothing until it becomes insight.</div>
+        <div class="v-example-box">📌 Netflix uses viewing data to recommend your next show — that's turning raw data into value.</div>
+      </div>
+    </div>
+
+    <div class="stat-highlight">
+      <div class="stat-h-item">
+        <div class="stat-h-num">181 ZB</div>
+        <div class="stat-h-label">Total global data by end of 2025</div>
+      </div>
+      <div class="stat-h-item">
+        <div class="stat-h-num">1.7 MB</div>
+        <div class="stat-h-label">Created per internet user, per second</div>
+      </div>
+      <div class="stat-h-item">
+        <div class="stat-h-num">80%</div>
+        <div class="stat-h-label">of all data is unstructured</div>
+      </div>
+      <div class="stat-h-item">
+        <div class="stat-h-num">55.7B</div>
+        <div class="stat-h-label">IoT devices connected by 2025</div>
+      </div>
+    </div>
+
+    <p style="font-size:12px;color:var(--muted);margin-top:-28px;"><em>Sources: Statista 2024 · G2 Big Data Statistics 2024 · Brimco Analytics 2024</em></p>
+
+    <div class="callout tip" style="margin-top:36px;">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <p><strong>Key Concept</strong>
+        Big Data is not just a storage problem — it's a <em>processing problem</em>. The challenge is making sense of massive, diverse, fast-moving data fast enough for it to be useful. That's why we need specialised technologies.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ 9.2 BIG DATA IN BUSINESSES ═══════════════════ -->
+<section id="s92" style="background:var(--white)">
+  <div class="container">
+
+    <div class="breadcrumb">
+      <span>Chapter 9</span><span>›</span><strong>9.2 Big Data in Businesses</strong>
+    </div>
+    <div class="section-eyebrow">
+      <span class="section-num">SECTION 9.2</span>
+      <div class="section-line"></div>
+    </div>
+    <h2 class="section-title">Big Data in Businesses</h2>
+    <p class="section-sub">This isn't a future concept. Companies you use every single day are already making billions using Big Data. Let's look at how.</p>
+
+    <div class="callout info">
+      <div class="callout-icon">📖</div>
+      <div class="callout-body">
+        <p><strong>Before we dive in — what do businesses actually DO with big data?</strong>
+        They collect data from their customers, run it through analytical tools, find patterns, and use those patterns to make better decisions — about products, prices, marketing, operations, and more.</p>
+      </div>
+    </div>
+
+    <!-- Photo row of industries -->
+    <div class="photo-row">
+      <div class="photo-spot">
+        <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=600&q=80" alt="Streaming service" />
+        <div class="photo-spot-caption">🎬 Entertainment & Streaming</div>
+      </div>
+      <div class="photo-spot">
+        <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="E-commerce delivery" />
+        <div class="photo-spot-caption">🛒 Retail & E-Commerce</div>
+      </div>
+      <div class="photo-spot">
+        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80" alt="Healthcare digital" />
+        <div class="photo-spot-caption">🏥 Healthcare</div>
+      </div>
+    </div>
+
+    <!-- Case studies grid -->
+    <div class="case-grid">
+
+      <!-- Netflix - WIDE -->
+      <div class="case-card wide">
+        <img class="case-img" src="https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=700&q=80" alt="Netflix streaming" />
+        <div class="case-body">
+          <div class="case-company-row">
+            <span class="case-badge orange">🎬 Netflix — Entertainment</span>
+          </div>
+          <div class="case-stat-num">80%</div>
+          <div class="case-stat-label">of shows you watch come from Netflix's recommendation engine</div>
+          <div class="case-title">How Netflix Knows What You'll Watch Next</div>
+          <div class="case-desc">Every time you use Netflix, it watches you back — in a data sense. It records what you watch, how long, when you pause, what you rewind, and what you skip. It does this for 260 million+ subscribers globally.<br><br>
+          Netflix feeds all this data into its recommendation algorithm. That's why your homepage looks different from your friend's — it's personalised to your taste. This recommendation system saves Netflix an estimated <strong>$1 billion+ per year</strong> in customer retention.</div>
+          <div class="case-insight">💡 Netflix even used data to decide to make "House of Cards" — data showed users loved the UK version AND Kevin Spacey movies. So they combined both.</div>
+        </div>
+      </div>
+
+      <!-- Amazon -->
+      <div class="case-card">
+        <img class="case-img" src="https://images.unsplash.com/photo-1598520106830-8c45c2035460?w=600&q=80" alt="Amazon packages delivery" />
+        <div class="case-body">
+          <div class="case-company-row">
+            <span class="case-badge yellow">🛒 Amazon — Retail</span>
+          </div>
+          <div class="case-stat-num">35%</div>
+          <div class="case-stat-label">of Amazon's revenue comes from its recommendation engine</div>
+          <div class="case-title">Amazon Knows What You'll Buy Before You Do</div>
+          <div class="case-desc">Amazon tracks every product you view, every review you read, every item you put in your cart (even if you don't buy). It uses this to show you "Customers who bought this also bought..." — which drives billions in extra sales.<br><br>
+          Amazon's predictive logistics system even <strong>pre-ships items</strong> to local warehouses before you click "buy," anticipating your purchase based on your browsing patterns.</div>
+          <div class="case-insight">💡 Anticipatory shipping — Amazon sometimes dispatches your order before you've placed it, just with your address left blank.</div>
+        </div>
+      </div>
+
+      <!-- Grab / Ride Hailing -->
+      <div class="case-card">
+        <img class="case-img" src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=600&q=80" alt="Ride hailing car city" />
+        <div class="case-body">
+          <div class="case-company-row">
+            <span class="case-badge teal">🚗 Grab & Uber — Ride-Hailing</span>
+          </div>
+          <div class="case-stat-num">Real-time</div>
+          <div class="case-stat-label">pricing updated every few minutes using live data</div>
+          <div class="case-title">Why Grab Costs More During Rain</div>
+          <div class="case-desc">Grab and Uber use Big Data to calculate "surge pricing" — when lots of people want rides but few drivers are available, the price goes up automatically. This isn't a human making a decision. It's an algorithm processing millions of data points (GPS locations, demand signals, weather, traffic) every second.<br><br>
+          They also use data to predict <strong>where demand will spike next</strong> — positioning drivers before the rush even starts.</div>
+          <div class="case-insight">💡 Next time Grab charges you extra during KLIA rush hour — that's Big Data pricing at work.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <hr class="divider">
+
+    <!-- Healthcare -->
+    <h3 style="font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px;">Big Data Saves Lives — Healthcare</h3>
+    <p style="margin-bottom:28px;">One of the most powerful applications of Big Data is in medicine. Hospitals are now using predictive analytics to help patients before they even get sick.</p>
+
+    <div class="case-grid">
+      <div class="case-card">
+        <img class="case-img" src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80" alt="Hospital doctor digital records" />
+        <div class="case-body">
+          <div class="case-company-row">
+            <span class="case-badge green">🏥 Massachusetts General Hospital — USA</span>
+          </div>
+          <div class="case-stat-num">22%</div>
+          <div class="case-stat-label">reduction in patients being re-admitted to hospital</div>
+          <div class="case-title">Predicting Who Will Get Sick Again</div>
+          <div class="case-desc">Doctors used Big Data to analyse thousands of patient records — age, medical history, medication, lifestyle. They built a model that predicts which patients are likely to be readmitted within 30 days of leaving hospital.<br><br>
+          Nurses could then call those patients early, adjust medications, or schedule checkups — before an emergency happened. This saved lives AND reduced healthcare costs significantly.</div>
+          <div class="case-insight">💡 The model doesn't replace doctors — it helps them focus their attention on the right patients at the right time.</div>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-img-placeholder" style="background:linear-gradient(135deg,#0F2744,#1A3A5C);font-size:80px;">🏦</div>
+        <div class="case-body">
+          <div class="case-company-row">
+            <span class="case-badge orange">🏦 JPMorgan Chase — Banking</span>
+          </div>
+          <div class="case-stat-num">360K</div>
+          <div class="case-stat-label">hours of legal work done in seconds using AI</div>
+          <div class="case-title">Reading 12,000 Legal Contracts in Seconds</div>
+          <div class="case-desc">JPMorgan developed an AI tool called COiN (Contract Intelligence) that reads and analyses 12,000 commercial credit contracts in a matter of seconds. Previously, this took lawyers <strong>360,000 hours per year</strong> to do manually.<br><br>
+          The bank also uses Big Data to detect fraud — scanning millions of transactions in real-time and flagging anything unusual before money leaves your account.</div>
+          <div class="case-insight">💡 Your bank already uses Big Data every time you make a purchase — to check if it looks like it's really you.</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Spotify / Social Media -->
+    <h3 style="font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px;">Other Examples You'll Recognise</h3>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:28px 0;">
+
+      <div style="background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:22px;">
+        <div style="font-size:32px;margin-bottom:12px;">🎵</div>
+        <div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;">Spotify</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6;">Analyses your listening history to create your personalised "Discover Weekly" playlist every Monday. It knows your mood from the tempo and genre of what you play.</div>
+      </div>
+
+      <div style="background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:22px;">
+        <div style="font-size:32px;margin-bottom:12px;">📱</div>
+        <div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;">TikTok & Instagram</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6;">Track every second you spend on each video. If you watched 40% of a cat video and 95% of a cooking video, the algorithm learns your preferences and fills your feed accordingly.</div>
+      </div>
+
+      <div style="background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:22px;">
+        <div style="font-size:32px;margin-bottom:12px;">🛍️</div>
+        <div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;">Lazada & Shopee</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6;">Use Big Data to show you items you're likely to buy based on your search history, location, time of day, and what similar customers purchased. Flash sale timing? Also data-driven.</div>
+      </div>
+
+      <div style="background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:22px;">
+        <div style="font-size:32px;margin-bottom:12px;">🌦️</div>
+        <div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;">Weather Apps</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6;">Combine satellite data, sensor networks, historical records, and ocean temperature readings to forecast rain. Modern forecasts use petabytes of atmospheric data analysed every hour.</div>
+      </div>
+
+      <div style="background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:22px;">
+        <div style="font-size:32px;margin-bottom:12px;">🏪</div>
+        <div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;">Supermarkets</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6;">Your loyalty card tracks every item you buy. Supermarkets use this to arrange store layouts, plan promotions, and send you targeted vouchers for products you actually buy.</div>
+      </div>
+
+      <div style="background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:22px;">
+        <div style="font-size:32px;margin-bottom:12px;">✈️</div>
+        <div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;">Airlines</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6;">Flight prices change dozens of times per day based on Big Data — demand patterns, seat availability, competitor prices, and historical booking behaviour all feed into dynamic pricing engines.</div>
+      </div>
+
+    </div>
+
+    <div class="callout success">
+      <div class="callout-icon">✅</div>
+      <div class="callout-body">
+        <p><strong>Bottom Line</strong>
+        Every company that has customers is collecting data. The ones using it intelligently are growing faster, serving better, and spending less. That's the business case for Big Data in one sentence.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ 9.3 TECHNOLOGIES ═══════════════════ -->
+<section id="s93">
+  <div class="container">
+
+    <div class="breadcrumb">
+      <span>Chapter 9</span><span>›</span><strong>9.3 Technologies for Handling Big Data</strong>
+    </div>
+    <div class="section-eyebrow">
+      <span class="section-num">SECTION 9.3</span>
+      <div class="section-line"></div>
+    </div>
+    <h2 class="section-title">Technologies for Handling Big Data</h2>
+    <p class="section-sub">These are the tools that make Big Data possible. You don't need to become an engineer — but every business leader should know what these tools do.</p>
+
+    <div class="callout tip">
+      <div class="callout-icon">🎯</div>
+      <div class="callout-body">
+        <p><strong>Why can't we just use Excel?</strong>
+        Excel can handle about 1 million rows. A single day of transaction data for a company like Grab has hundreds of millions of rows. We need completely different tools designed from the ground up for scale, speed, and complexity.</p>
+      </div>
+    </div>
+
+    <img class="img-banner" src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&q=80" alt="Server room infrastructure" />
+
+    <h3 style="font-size:20px;font-weight:700;color:var(--navy);margin-bottom:6px;">⚙️ Storage & Processing Tools</h3>
+    <p style="margin-bottom:28px;">These tools are the backbone — they store huge amounts of data and process it quickly.</p>
+
+    <div class="tech-grid">
+
+      <div class="tech-card">
+        <div class="tech-logo-area">🐘</div>
+        <div class="tech-category">Storage & Processing</div>
+        <div class="tech-name">Apache Hadoop</div>
+        <div class="tech-desc">An open-source framework that spreads large files across many computers and processes them in parallel. Instead of one super-powerful computer, you use hundreds of ordinary ones working together.</div>
+        <div class="tech-analogy">
+          <strong>🔑 Analogy</strong>
+          Instead of one giant librarian sorting all books, Hadoop is like having 500 librarians each sorting a section — much faster, and if one gets tired, the others keep going.
+        </div>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-logo-area">⚡</div>
+        <div class="tech-category">Fast Processing</div>
+        <div class="tech-name">Apache Spark</div>
+        <div class="tech-desc">A faster version of Hadoop that processes data entirely in memory (RAM) instead of on disk. Up to 100× faster than Hadoop for certain tasks. Used when speed matters, like real-time fraud detection.</div>
+        <div class="tech-analogy">
+          <strong>🔑 Analogy</strong>
+          Hadoop is like reading a book from a library shelf. Spark is like having the whole book already memorised — lightning fast to search.
+        </div>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-logo-area">🌊</div>
+        <div class="tech-category">Real-time Streaming</div>
+        <div class="tech-name">Apache Kafka</div>
+        <div class="tech-desc">A system that moves data from where it's created to where it needs to be processed — in real time. Used by Uber, LinkedIn, and Netflix to handle millions of events per second continuously.</div>
+        <div class="tech-analogy">
+          <strong>🔑 Analogy</strong>
+          Kafka is like a conveyor belt at a supermarket. Products (data) keep moving from one end to the other without stopping — no backlog, no waiting.
+        </div>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-logo-area">☁️</div>
+        <div class="tech-category">Cloud Storage</div>
+        <div class="tech-name">Amazon S3 / Google Cloud</div>
+        <div class="tech-desc">Instead of buying physical servers, businesses rent cloud storage from Amazon or Google. It's infinitely scalable, pay-as-you-use, and accessible from anywhere in the world.</div>
+        <div class="tech-analogy">
+          <strong>🔑 Analogy</strong>
+          Renting cloud storage is like renting a unit at a storage facility instead of building your own warehouse. You only pay for what you use, and they handle maintenance.
+        </div>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-logo-area">🗄️</div>
+        <div class="tech-category">Databases</div>
+        <div class="tech-name">SQL & NoSQL Databases</div>
+        <div class="tech-desc"><strong>SQL</strong> (like MySQL) is great for structured, neatly organised data — like bank transactions. <strong>NoSQL</strong> (like MongoDB) handles flexible, unstructured data at massive scale — like social media posts or product catalogues.</div>
+        <div class="tech-analogy">
+          <strong>🔑 Analogy</strong>
+          SQL is a filing cabinet with labelled folders. NoSQL is a big bin where you throw anything in — messier, but far more flexible.
+        </div>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-logo-area">🏗️</div>
+        <div class="tech-category">Data Warehousing</div>
+        <div class="tech-name">Google BigQuery / Snowflake</div>
+        <div class="tech-desc">Cloud-based warehouses designed to run complex queries on billions of rows in seconds. Used by analysts and business managers to ask questions like "Which product sold the most in Southeast Asia last quarter?"</div>
+        <div class="tech-analogy">
+          <strong>🔑 Analogy</strong>
+          BigQuery is like Google Search — but for your company's data. Ask a question, get an answer in seconds from billions of records.
+        </div>
+      </div>
+
+    </div>
+
+    <hr class="divider">
+
+    <h3 style="font-size:20px;font-weight:700;color:var(--navy);margin-bottom:6px;">📊 Analytics & Visualisation Tools</h3>
+    <p style="margin-bottom:28px;">These are the tools that turn processed data into charts, dashboards, and insights that business leaders can actually read and act on.</p>
+
+    <div class="tech-grid">
+
+      <div class="tech-card">
+        <div class="tech-logo-area">📊</div>
+        <div class="tech-category">Business Intelligence</div>
+        <div class="tech-name">Tableau</div>
+        <div class="tech-desc">A drag-and-drop tool that creates beautiful, interactive charts and dashboards without writing code. Widely used in business analyst and management roles. Connect your data → drag fields → see your chart.</div>
+        <div class="tech-analogy">
+          <strong>🔑 Who uses it</strong>
+          Sales managers tracking performance. Marketing teams visualising campaign results. Finance teams monitoring budgets in real time.
+        </div>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-logo-area">📈</div>
+        <div class="tech-category">Business Intelligence</div>
+        <div class="tech-name">Microsoft Power BI</div>
+        <div class="tech-desc">Microsoft's analytics platform that integrates directly with Excel and Office 365. If you can use Excel, you can learn Power BI. The most commonly required BI tool in job postings across Southeast Asia.</div>
+        <div class="tech-analogy">
+          <strong>🔑 Career tip</strong>
+          Learning Power BI is one of the highest-ROI skills for any business student. It appears in thousands of job listings from analyst to management roles.
+        </div>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-logo-area">🐍</div>
+        <div class="tech-category">Data Science & AI</div>
+        <div class="tech-name">Python</div>
+        <div class="tech-desc">The world's most popular programming language for data analysis, machine learning, and AI. With libraries like Pandas and NumPy, Python can process datasets that would crash Excel in seconds.</div>
+        <div class="tech-analogy">
+          <strong>🔑 Who uses it</strong>
+          Data scientists, data analysts, machine learning engineers. Not required for most management roles — but a major career advantage if you have it.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="callout example">
+      <div class="callout-icon">🧩</div>
+      <div class="callout-body">
+        <p><strong>How These Tools Work Together</strong>
+        A retail company collects transaction data → stored in <strong>Amazon S3</strong> → cleaned using <strong>Apache Spark</strong> → moved into <strong>Snowflake</strong> (warehouse) → visualised in <strong>Power BI</strong> → managers see a dashboard showing sales trends by store. Each tool plays a specific role in the chain.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ 9.4 TECHNOLOGY FOUNDATION ═══════════════════ -->
+<section id="s94" style="background:var(--white)">
+  <div class="container">
+
+    <div class="breadcrumb">
+      <span>Chapter 9</span><span>›</span><strong>9.4 Understanding Big Data Technology Foundation</strong>
+    </div>
+    <div class="section-eyebrow">
+      <span class="section-num">SECTION 9.4</span>
+      <div class="section-line"></div>
+    </div>
+    <h2 class="section-title">Understanding the Big Data Technology Foundation</h2>
+    <p class="section-sub">Now let's put it all together. How do these technologies connect? What does a Big Data system actually look like end-to-end?</p>
+
+    <!-- The Data Pipeline -->
+    <h3 style="font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px;">🔄 The Big Data Pipeline</h3>
+    <p style="margin-bottom:28px;">All Big Data systems follow the same basic flow. Data travels from where it's created, through a series of steps, until it becomes a useful insight. Think of it like a food supply chain — from farm to table.</p>
+
+    <div class="analogy-block">
+      <div class="analogy-icon">🏭</div>
+      <div>
+        <div class="analogy-title">The Factory Assembly Line Analogy</div>
+        <div class="analogy-text">
+          Raw materials go in one end of a factory. Each station on the assembly line does something specific — cuts, shapes, refines, and assembles. A finished product comes out the other end.<br><br>
+          <strong>The Big Data pipeline works the same way.</strong> Raw, messy data goes in. Each step cleans, processes, and enriches it. At the end, a clean, useful insight comes out — and a business manager uses that insight to make a better decision.
+        </div>
+      </div>
+    </div>
+
+    <!-- Pipeline steps -->
+    <div class="pipeline">
+
+      <div class="pipe-step">
+        <div class="pipe-icon-big">📡</div>
+        <div class="pipe-num-circle">1</div>
+        <div class="pipe-name">COLLECT</div>
+        <div class="pipe-desc">Data is gathered from all sources — apps, sensors, websites, transactions, social media, GPS. It arrives continuously, often in real-time.</div>
+        <div class="pipe-arrow">›</div>
+      </div>
+
+      <div class="pipe-step">
+        <div class="pipe-icon-big">🗄️</div>
+        <div class="pipe-num-circle">2</div>
+        <div class="pipe-name">STORE</div>
+        <div class="pipe-desc">Raw data lands in a Data Lake — a giant storage pool for all formats of data. Think of it as a reservoir. No processing yet, just safe storage at scale.</div>
+        <div class="pipe-arrow">›</div>
+      </div>
+
+      <div class="pipe-step">
+        <div class="pipe-icon-big">⚙️</div>
+        <div class="pipe-num-circle">3</div>
+        <div class="pipe-name">PROCESS</div>
+        <div class="pipe-desc">Data is cleaned (remove errors, fix formats), filtered (keep what's relevant), and transformed (standardise structure). This is called ETL — Extract, Transform, Load.</div>
+        <div class="pipe-arrow">›</div>
+      </div>
+
+      <div class="pipe-step">
+        <div class="pipe-icon-big">🧠</div>
+        <div class="pipe-num-circle">4</div>
+        <div class="pipe-name">ANALYSE</div>
+        <div class="pipe-desc">Clean data moves into a Data Warehouse. Algorithms, AI models, and analysts query the data — looking for patterns, trends, correlations, and anomalies.</div>
+        <div class="pipe-arrow">›</div>
+      </div>
+
+      <div class="pipe-step">
+        <div class="pipe-icon-big">🎯</div>
+        <div class="pipe-num-circle">5</div>
+        <div class="pipe-name">DECIDE</div>
+        <div class="pipe-desc">Insights are presented in dashboards and reports. Business leaders use them to make smarter, faster, evidence-based decisions — instead of guessing.</div>
+      </div>
+
+    </div>
+
+    <p style="font-size:12px;color:var(--muted);margin-top:8px;"><em>Source: IBM Data & AI Framework · Gartner Data Architecture Guide</em></p>
+
+    <hr class="divider">
+
+    <!-- Data Lake vs Data Warehouse -->
+    <h3 style="font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px;">🌊 Data Lake vs 🏗️ Data Warehouse</h3>
+    <p style="margin-bottom:28px;">These two are often confused. They serve different purposes in the Big Data pipeline — here's a simple way to understand both.</p>
+
+    <div class="lvw-grid">
+      <div class="lvw-card lake">
+        <div class="lvw-icon">🌊</div>
+        <div class="lvw-name">Data Lake</div>
+        <div class="lvw-tagline">"Store everything, figure it out later"</div>
+        <ul class="lvw-list">
+          <li>Stores raw, unprocessed data in any format</li>
+          <li>Can hold structured AND unstructured data</li>
+          <li>Very cheap to store large volumes</li>
+          <li>Used by data engineers and scientists</li>
+          <li>Think: a giant pond where all water (data) flows into</li>
+        </ul>
+      </div>
+      <div class="lvw-card warehouse">
+        <div class="lvw-icon">🏗️</div>
+        <div class="lvw-name">Data Warehouse</div>
+        <div class="lvw-tagline">"Cleaned, organised, ready to use"</div>
+        <ul class="lvw-list">
+          <li>Stores processed, structured, ready-to-query data</li>
+          <li>Optimised for fast analytics and reporting</li>
+          <li>Used by analysts and business intelligence teams</li>
+          <li>Expensive but very fast for querying</li>
+          <li>Think: a well-organised factory with labelled shelves</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">💧</div>
+      <div class="callout-body">
+        <p><strong>Simple way to remember the difference</strong>
+        A <strong>Data Lake</strong> is like a huge natural lake — water of all types flows in. A <strong>Data Warehouse</strong> is like a bottled water factory — only clean, purified water in specific bottles. You need the lake to feed the factory.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Batch vs Real-time -->
+    <h3 style="font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px;">🕐 Batch Processing vs Real-time Processing</h3>
+    <p style="margin-bottom:28px;">Not all Big Data needs to be processed instantly. There are two main approaches — and the right one depends on the business need.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>🕐 Batch Processing</th>
+          <th>⚡ Real-time Processing</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>What it is</td>
+          <td>Processes large chunks of data at scheduled intervals (hourly, nightly, weekly)</td>
+          <td>Processes data the moment it arrives — within milliseconds</td>
+        </tr>
+        <tr>
+          <td>When to use</td>
+          <td>When you can wait for the answer — end-of-day reports, monthly invoices</td>
+          <td>When delay is unacceptable — fraud detection, stock trading, live tracking</td>
+        </tr>
+        <tr>
+          <td>Cost</td>
+          <td>Cheaper (you process in bulk, off-peak hours)</td>
+          <td>More expensive (constant processing, always on)</td>
+        </tr>
+        <tr>
+          <td>Example</td>
+          <td>Your bank statement is calculated and sent to you once a month</td>
+          <td>Your bank blocks a suspicious transaction in real-time while you're at the checkout</td>
+        </tr>
+        <tr>
+          <td>Tools used</td>
+          <td>Hadoop MapReduce, traditional ETL tools</td>
+          <td>Apache Kafka, Apache Spark Streaming</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr class="divider">
+
+    <!-- The 3-tier architecture -->
+    <h3 style="font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px;">🏛️ The Big Data Technology Architecture</h3>
+    <p style="margin-bottom:28px;">Big Data systems are typically built in three layers — each one serving a different function. Think of it like a building: foundations on the bottom, working floors in the middle, and a viewing platform on top.</p>
+
+    <div style="display:grid;grid-template-columns:1fr;gap:16px;margin:28px 0;">
+
+      <div style="background:var(--navy);border-radius:12px;padding:28px;display:grid;grid-template-columns:80px 1fr;gap:20px;align-items:center;">
+        <div style="text-align:center;font-size:40px;">🔝</div>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--yellow);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">LAYER 3 — Presentation Layer</div>
+          <div style="font-size:16px;font-weight:700;color:#FFFFFF;margin-bottom:6px;">Dashboards, Reports & Visualisations</div>
+          <div style="font-size:14px;color:rgba(255,255,255,0.6);">What business users and managers see. Tools: Tableau, Power BI, Google Looker Studio, custom web dashboards. This is where insights become decisions.</div>
+        </div>
+      </div>
+
+      <div style="background:#132235;border-radius:12px;padding:28px;display:grid;grid-template-columns:80px 1fr;gap:20px;align-items:center;border:1px solid rgba(255,255,255,0.08);">
+        <div style="text-align:center;font-size:40px;">⚙️</div>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">LAYER 2 — Processing & Analytics Layer</div>
+          <div style="font-size:16px;font-weight:700;color:#FFFFFF;margin-bottom:6px;">Data Cleaning, Transformation & Analysis</div>
+          <div style="font-size:14px;color:rgba(255,255,255,0.6);">Where data is processed and made sense of. Tools: Apache Spark, Python/R, SQL queries, Machine Learning models. This is where raw data becomes meaningful patterns.</div>
+        </div>
+      </div>
+
+      <div style="background:#0A1827;border-radius:12px;padding:28px;display:grid;grid-template-columns:80px 1fr;gap:20px;align-items:center;border:1px solid rgba(255,255,255,0.05);">
+        <div style="text-align:center;font-size:40px;">🏗️</div>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--orange);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">LAYER 1 — Infrastructure Layer (Foundation)</div>
+          <div style="font-size:16px;font-weight:700;color:#FFFFFF;margin-bottom:6px;">Storage, Collection & Ingestion</div>
+          <div style="font-size:14px;color:rgba(255,255,255,0.6);">The base. Receives raw data from all sources and stores it reliably at scale. Tools: Hadoop, Apache Kafka, Amazon S3, Data Lakes. Without this foundation, nothing above can work.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-icon">🎓</div>
+      <div class="callout-body">
+        <p><strong>Exam Tip</strong>
+        Remember the three layers from bottom to top: <strong>Infrastructure → Processing → Presentation.</strong> Data flows upward — collected at the bottom, processed in the middle, presented at the top for decision-making. Each layer depends on the one below it.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Cloud Computing context -->
+    <h3 style="font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px;">☁️ The Role of Cloud Computing</h3>
+    <p style="margin-bottom:24px;">Before cloud computing, building a Big Data system required <strong>buying and maintaining physical servers</strong> — extremely expensive and slow to set up. Cloud computing changed everything.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:28px 0;">
+      <div style="background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:24px;">
+        <div style="font-size:28px;margin-bottom:12px;">😓</div>
+        <div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px;">Before Cloud — On-Premise</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.7;">
+          • Buy expensive physical servers<br>
+          • Hire IT staff to manage them<br>
+          • Takes months to set up<br>
+          • Pay whether you use them or not<br>
+          • Limited by physical space
+        </div>
+      </div>
+      <div style="background:var(--teal-lt);border:1.5px solid rgba(13,115,119,0.25);border-radius:12px;padding:24px;">
+        <div style="font-size:28px;margin-bottom:12px;">😊</div>
+        <div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px;">After Cloud — AWS / Azure / GCP</div>
+        <div style="font-size:13px;color:var(--teal);line-height:1.7;">
+          • Rent as much storage as you need<br>
+          • Up and running in minutes<br>
+          • Pay only for what you actually use<br>
+          • Scale up or down instantly<br>
+          • Available anywhere in the world
+        </div>
+      </div>
+    </div>
+
+    <div class="callout example">
+      <div class="callout-icon">🌏</div>
+      <div class="callout-body">
+        <p><strong>Real Impact</strong>
+        A startup in Singapore can now build a Big Data system for the cost of a few hundred dollars per month using Amazon Web Services. Ten years ago, the same system would have required millions in hardware and years of setup. Cloud computing democratised Big Data — making it accessible to businesses of all sizes.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ SUMMARY ═══════════════════ -->
+<section id="summary">
+  <div class="container">
+
+    <div class="section-eyebrow">
+      <span class="section-num">CHAPTER SUMMARY</span>
+      <div class="section-line"></div>
+    </div>
+    <h2 class="section-title">Key Takeaways</h2>
+    <p class="section-sub">If you remember nothing else from this chapter, remember these five things.</p>
+
+    <div class="takeaway-list">
+      <div class="takeaway-item">
+        <div class="takeaway-num">1</div>
+        <div class="takeaway-text"><strong>Big Data is defined by the 5 V's</strong> — Volume, Velocity, Variety, Veracity, and Value. Data becomes "big" when normal tools like Excel can't process it fast enough or at the scale required.</div>
+      </div>
+      <div class="takeaway-item">
+        <div class="takeaway-num">2</div>
+        <div class="takeaway-text"><strong>Every major business already uses Big Data</strong> — Netflix recommends shows, Amazon predicts purchases, banks detect fraud in real-time, hospitals predict which patients need extra care. It's everywhere.</div>
+      </div>
+      <div class="takeaway-item">
+        <div class="takeaway-num">3</div>
+        <div class="takeaway-text"><strong>Key technologies</strong> include Hadoop (storage at scale), Spark (fast processing), Kafka (real-time streaming), Cloud platforms (Amazon/Google/Microsoft), and BI tools like Tableau and Power BI for visualisation.</div>
+      </div>
+      <div class="takeaway-item">
+        <div class="takeaway-num">4</div>
+        <div class="takeaway-text"><strong>The Big Data pipeline</strong> follows five stages: Collect → Store → Process → Analyse → Decide. Raw, messy data goes in at one end; clean, useful business insights come out the other.</div>
+      </div>
+      <div class="takeaway-item">
+        <div class="takeaway-num">5</div>
+        <div class="takeaway-text"><strong>The technology foundation has three layers</strong>: Infrastructure (store data), Processing (make sense of data), and Presentation (display results). Cloud computing made this affordable for companies of all sizes.</div>
+      </div>
+    </div>
+
+    <div class="quiz-box">
+      <h3>💬 Discussion Questions — Think & Discuss</h3>
+      <div class="quiz-q">
+        <div class="quiz-q-num">Q1</div>
+        <div class="quiz-q-text">Think about the last app you opened today. What data do you think it collected about you? Is that acceptable? Where would you draw the line?</div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-num">Q2</div>
+        <div class="quiz-q-text">A small mamak restaurant in KL wants to use Big Data to grow their business. What kind of data could they collect, and how might they use it? What challenges would they face?</div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-num">Q3</div>
+        <div class="quiz-q-text">Which of the 5 V's do you think is the MOST important for a business like Grab? Which is MOST important for a hospital? Are they the same or different — and why?</div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-q-num">Q4</div>
+        <div class="quiz-q-text">What's the difference between a Data Lake and a Data Warehouse? Give a real-world example of when a company would use each one.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ REFERENCES ═══════════════════ -->
+<section id="references" style="background:var(--white);padding-top:64px;padding-bottom:64px;">
+  <div class="container">
+    <div class="section-eyebrow">
+      <span class="section-num">ACADEMIC SOURCES</span>
+      <div class="section-line"></div>
+    </div>
+    <h2 class="section-title" style="font-size:28px;">References & Citations</h2>
+    <br>
+    <div class="refs-list">
+      <div class="ref-item"><div class="ref-n">[1]</div><div>G2. (December 2024). <em>85+ Big Data Statistics To Map Growth in 2025.</em> <a href="https://www.g2.com/articles/big-data-statistics" target="_blank">g2.com</a></div></div>
+      <div class="ref-item"><div class="ref-n">[2]</div><div>PixelPlex. (2025). <em>Top 50 Big Data Statistics and Trends for 2025 and Beyond.</em> <a href="https://pixelplex.io/blog/big-data-statistics/" target="_blank">pixelplex.io</a></div></div>
+      <div class="ref-item"><div class="ref-n">[3]</div><div>Coherent Solutions. (2024). <em>The Future of Data Analytics: Trends in 7 Industries.</em> <a href="https://www.coherentsolutions.com/insights/the-future-and-current-trends-in-data-analytics-across-industries" target="_blank">coherentsolutions.com</a></div></div>
+      <div class="ref-item"><div class="ref-n">[4]</div><div>Brimco. (2024). <em>Big Data Analytics Statistics 2025.</em> <a href="https://www.brimco.io/analytics/big-data-analytics-statistics/" target="_blank">brimco.io</a></div></div>
+      <div class="ref-item"><div class="ref-n">[5]</div><div>Big Data Analytics News. (2024). <em>50+ Incredible Big Data Statistics for 2026.</em> <a href="https://bigdataanalyticsnews.com/big-data-statistics/" target="_blank">bigdataanalyticsnews.com</a></div></div>
+      <div class="ref-item"><div class="ref-n">[6]</div><div>Guru99. (2024). <em>What is Big Data? Introduction, Types, Characteristics, Examples.</em> <a href="https://www.guru99.com/what-is-big-data.html" target="_blank">guru99.com</a></div></div>
+      <div class="ref-item"><div class="ref-n">[7]</div><div>Dataforest AI. (2023). <em>Big Data Basics: A Comprehensive Guide to Big Data and Its Applications.</em> <a href="https://dataforest.ai/blog/big-data-basics-a-comprehensive-guide-to-big-data-and-its-applications" target="_blank">dataforest.ai</a></div></div>
+      <div class="ref-item"><div class="ref-n">[8]</div><div>McKinsey Global Institute. (2024). <em>The Age of Analytics: Competing in a Data-Driven World.</em> McKinsey & Company.</div></div>
+      <div class="ref-item"><div class="ref-n">[9]</div><div>IBM Corporation. (2025). <em>IBM Data & AI Framework and Data Quality Cost Research.</em> ibm.com</div></div>
+      <div class="ref-item"><div class="ref-n">[10]</div><div>Gartner Inc. (2024). <em>Analytics Maturity Model and Data Management Framework.</em> gartner.com</div></div>
+      <div class="ref-item"><div class="ref-n">[11]</div><div>Kanerika Inc. (2024, June). <em>The Big Data Cloud — All You Need To Know in 2024.</em> Medium. <a href="https://medium.com/@kanerika/the-big-data-cloud-all-you-need-to-know-in-2024-5a91c56ee144" target="_blank">medium.com</a></div></div>
+      <div class="ref-item"><div class="ref-n">[12]</div><div>Fortune Business Insights. (2024). <em>Big Data Analytics Market Size, Value & Share Analysis 2034.</em> <a href="https://www.fortunebusinessinsights.com/big-data-analytics-market-106179" target="_blank">fortunebusinessinsights.com</a></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer>
+  <p><strong>Chapter 9 — Big Data & Analytics</strong></p>
+  <p style="margin-top:8px;">Information Technology in Business &nbsp;·&nbsp; Lecture Notes &nbsp;·&nbsp; 2025</p>
+  <p style="margin-top:8px;">Sources: G2 · McKinsey · Gartner · IBM · Fortune Business Insights · PixelPlex · Brimco · Guru99 · Dataforest</p>
+</footer>
+
+<!-- Smooth scroll active state for nav -->
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.sticky-nav a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.style.color = '');
+        const active = document.querySelector(`.sticky-nav a[href="#${entry.target.id}"]`);
+        if (active) active.style.color = '#E8500A';
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
